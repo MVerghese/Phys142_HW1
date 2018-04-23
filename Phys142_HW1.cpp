@@ -33,7 +33,6 @@ int main() {
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	int i = 0;
-	int x;
 	for(cdouble val : psiDisc) {
 		x = x0 + i*deltaX;
 		i++;
