@@ -23,7 +23,7 @@ const double deltaX = (xD - x0)/D;
 
 int main() {
 	//Init discrete psi vector
-	vector<cdouble> psiDisc (D);
+	vector<cdouble> psiDisc;
 	cdouble tempPsiVal;
 	double x;
 	for(int i=0; i<D; i++) {
