@@ -28,8 +28,8 @@ int main() {
 	int x;
 	for(int i=0; i<D; i++) {
 		x = x0 + i*D;
-		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
-		cout << tempPsiVal << endl;
+		tempPsiVal = pow((alpha/M_PI),.25)//*exp((alpha*-1/2)*(x-xstart));
+		cout << tempPsiVal << ", ";
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	/*
@@ -37,5 +37,6 @@ int main() {
 		cout << val << endl;
 	}
 	*/
+	cout << endl;
 }
 
