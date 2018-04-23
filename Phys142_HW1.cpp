@@ -5,7 +5,7 @@
 #include <iostream>
 
 
-//using namespace std;
+using namespace std;
 
 const int D = 600;
 
@@ -32,6 +32,6 @@ int main() {
 		psiDisc.push_back(tempPsiVal * tempPsiVal.conj());
 	}
 	
-	std::cout << psiDisc << endl;
+	cout << psiDisc << endl;
 }
 
