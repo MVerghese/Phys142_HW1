@@ -25,14 +25,14 @@ int main() {
 	//Init discrete psi vector
 	vector<cdouble> psiDisc (D);
 	cdouble tempPsiVal;
-	int x;
+	double x;
 	for(int i=0; i<D; i++) {
 		x = x0 + i*deltaX;
 		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
 		//cout << tempPsiVal << endl;
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
-	int i = 0;
+	double i = 0;
 	for(cdouble val : psiDisc) {
 		x = x0 + i*deltaX;
 		i++;
