@@ -37,7 +37,7 @@ int main() {
 	for(cdouble val : psiDisc) {
 		x = x0 + i*deltaX;
 		i++;
-		cout << x << "	" << val[0] << endl;
+		cout << x << "	" << real(val) << endl;
 	}
 }
 
