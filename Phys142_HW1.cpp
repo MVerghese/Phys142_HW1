@@ -27,8 +27,8 @@ int main() {
 	cdouble tempPsiVal;
 	int x;
 	for(int i=0; i<D; i++) {
-		x = x0 + i*D;
-		tempPsiVal = /*pow((alpha/M_PI),.25)**/exp((alpha*-1/2)*(x-xstart));
+		x = x0 + i*deltaX;
+		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
 		cout << tempPsiVal << ", ";
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
