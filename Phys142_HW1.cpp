@@ -55,7 +55,9 @@ int main() {
 		psi = vecMatMul(psi,transitionMatrix);
 	}
 	
-	printCVec(psi);
+	cout << A << endl;
+	
+	//printCVec(psi);
 	
 }
 
