@@ -16,7 +16,7 @@ const cdouble I(0,1);
 const double mass = 1.0;
 const double omega = 1.0;
 const double alpha = 2.0;
-const double xstart = .75
+const double xstart = .75;
 const double x0 = -4.0;
 const double xD = 4.0;
 const double deltaX = (xD - x0)/D;
@@ -29,9 +29,10 @@ int main() {
 	for(int i=0; i<D; i++) {
 		x = x0 + i*D;
 		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
-		psiDisc.push_back(tempPsiVal * tempPsiVal.conj());
+		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
-	
-	cout << psiDisc << endl;
+	for(cdouble val : psiDisc) {
+		cout << val << endl;
+	}
 }
 
