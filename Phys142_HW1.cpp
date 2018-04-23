@@ -30,16 +30,16 @@ int main() {
 		x = x0 + i*deltaX;
 		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*pow((x-xstart),2.0));
 		//cout << tempPsiVal << endl;
-		//psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
+		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	double i = 0;
-	cout << "Before print loop" << endl;
+	//cout << "Before print loop" << endl;
 	for(cdouble val : psiDisc) {
-		cout << "in print loop" << endl;
+		//cout << "in print loop" << endl;
 		x = x0 + i*deltaX;
 		i++;
 		cout << x << "	" << real(val) << endl;
 	}
-	cout << "post print loop" << endl;
+	//cout << "post print loop" << endl;
 }
 
