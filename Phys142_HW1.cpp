@@ -58,27 +58,17 @@ int main() {
 	cout << A << endl;
 	
 	//printCVec(psi);
+	printCVec(transitionMatrix);
 	
-	vector<cdouble> testM;
-	for(double i=1;i<5;i++) {
-		testM.push_back(i);
-	}
-	
-	vector<cdouble> testV;
-	for(double i=1;i<3;i++) {
-		testV.push_back(i);
-	}
-	
-	printCVec(vecMatMul(testV,testM));
 	
 }
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
 	vector<cdouble> newVec;
-	for(int i=0; i<2; i++) {
+	for(int i=0; i<D; i++) {
 		cdouble sum = (0.0,0.0);
-		for(int j=0; j<2; j++) {
-			sum+= m.at(i*2 + j)*v.at(j);
+		for(int j=0; j<D; j++) {
+			sum+= m.at(i*D + j)*v.at(j);
 		}
 		newVec.push_back(sum);
 	}
