@@ -47,7 +47,7 @@ int main() {
 		for(int j=0; j<D; j++) {
 			xi = x0 + i*deltaX;
 			xj = x0 + j*deltaX;
-			transitionMatrix.push_ack((1.0/A)*exp((I*deltaT/hbar)*((.5*mass*pow(xj-xi,2)/pow(deltaT,2))-(mass*pow(omega,2)*pow((xj+xi)/2,2)))));
+			transitionMatrix.push_back((1.0/A)*exp((I*deltaT/hbar)*((.5*mass*pow(xj-xi,2)/pow(deltaT,2))-(mass*pow(omega,2)*pow((xj+xi)/2,2)))));
 		}
 	}
 	vector<cdouble> psi = psiDisc;
@@ -66,13 +66,14 @@ vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
 		for(int j=0; j<D; j++) {
 			sum+= m.at(i*D + j)*v.at(j);
 		}
-		newVec.pushback(sum);
+		newVec.push_back(sum);
 	}
 	return newVec;
 }
 
 void printCVec(vector<cdouble> v) {
 	double i = 0;
+	double x;
 	for(cdouble val : v) {
 		x = x0 + i*deltaX;
 		i++;
