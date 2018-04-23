@@ -29,14 +29,11 @@ int main() {
 	for(int i=0; i<D; i++) {
 		x = x0 + i*deltaX;
 		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
-		cout << tempPsiVal << ", ";
+		//cout << tempPsiVal << endl;
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
-	/*
 	for(cdouble val : psiDisc) {
 		cout << val << endl;
 	}
-	*/
-	cout << endl;
 }
 
