@@ -33,10 +33,13 @@ int main() {
 		//psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	double i = 0;
+	cout << "Before print loop" << endl;
 	for(cdouble val : psiDisc) {
+		cout << "in print loop" << endl;
 		x = x0 + i*deltaX;
 		i++;
 		cout << x << "	" << real(val) << endl;
 	}
+	cout << "post print loop" << endl;
 }
 
