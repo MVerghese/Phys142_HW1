@@ -9,12 +9,12 @@
 
 const int D = 600;
 
-typedef complex::complex<double> cdouble;
+typedef complex<double> cdouble;
 
 const cdouble I(0,1);
 
-const double mass = 1.0
-const double omega = 1.0
+const double mass = 1.0;
+const double omega = 1.0;
 const double alpha = 2.0;
 const double xstart = .75
 const double x0 = -4.0;
@@ -23,7 +23,7 @@ const double deltaX = (xD - x0)/D;
 
 int main() {
 	//Init discrete psi vector
-	vector::vector<cdouble> psiDisc (D);
+	vector<cdouble> psiDisc (D);
 	cdouble tempPsiVal;
 	int x;
 	for(int i=0; i<D; i++) {
