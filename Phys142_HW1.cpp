@@ -75,10 +75,10 @@ int main() {
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
 	vector<cdouble> newVec;
-	for(int i=0; i<D; i++) {
+	for(int i=0; i<2; i++) {
 		cdouble sum = (0.0,1.0);
-		for(int j=0; j<D; j++) {
-			sum+= m.at(i*D + j)*v.at(j);
+		for(int j=0; j<2; j++) {
+			sum+= m.at(i*2 + j)*v.at(j);
 		}
 		newVec.push_back(sum);
 	}
