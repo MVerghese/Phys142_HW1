@@ -39,7 +39,7 @@ int main() {
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	
-	double A = pow((2*M_PI*hbar*I*deltaT/mass),.5)
+	cdouble A = pow((2*M_PI*hbar*I*deltaT/mass),.5);
 	vector<cdouble> transitionMatrix;
 	int xi;
 	int xj;
