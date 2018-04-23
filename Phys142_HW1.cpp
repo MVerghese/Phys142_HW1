@@ -59,6 +59,18 @@ int main() {
 	
 	//printCVec(psi);
 	
+	vector<cdouble> testM;
+	for(double i=1;i<5;i++) {
+		testM.push_back(i);
+	}
+	
+	vector<cdouble> testV;
+	for(double i=1;i<3;i++) {
+		testV.push_back(i);
+	}
+	
+	printCVec(vecMatMul(testV,testM));
+	
 }
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
