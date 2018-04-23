@@ -32,8 +32,12 @@ int main() {
 		//cout << tempPsiVal << endl;
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
+	int i = 0;
+	int x;
 	for(cdouble val : psiDisc) {
-		cout << val << endl;
+		x = x0 + i*deltaX;
+		i++;
+		cout << x << "	" << val[0] << endl;
 	}
 }
 
