@@ -76,7 +76,7 @@ int main() {
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
 	vector<cdouble> newVec;
 	for(int i=0; i<2; i++) {
-		cdouble sum = (0.0,1.0);
+		cdouble sum = (0.0,0.0);
 		for(int j=0; j<2; j++) {
 			sum+= m.at(i*2 + j)*v.at(j);
 		}
