@@ -28,9 +28,9 @@ int main() {
 	double x;
 	for(int i=0; i<D; i++) {
 		x = x0 + i*deltaX;
-		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*(x-xstart));
+		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*pow((x-xstart),2.0));
 		//cout << tempPsiVal << endl;
-		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
+		//psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	double i = 0;
 	for(cdouble val : psiDisc) {
