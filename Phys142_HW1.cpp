@@ -3,6 +3,7 @@
 #include <complex>
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 
 using namespace std;
@@ -16,7 +17,7 @@ const cdouble I(0.0,1.0);
 const double mass = 1.0;
 const double omega = 1.0;
 const double alpha = 2.0;
-const double hbar = 6.582119 * pow(10,-16); 
+const double hbar = 1.0;//6.582119 * pow(10,-16); 
 const double xstart = .75;
 const double x0 = -4.0;
 const double xD = 4.0;
@@ -25,7 +26,13 @@ const double T = 2.0 * M_PI;
 const double deltaT = T/128.0;
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m);
-void printCVec(vector<cdouble> v);
+void printCVec(vector<cdouble> v, string fileName);
+vector<cdouble> vecNorm(vector<cdouble> v);
+double getAvgX(vector<cdouble> v);
+double getV(vector<cdouble> v);
+double getK(vector<cdouble> v);
+
+ofstream oFile;
 
 int main() {
 	//Init discrete psi vector
@@ -34,31 +41,50 @@ int main() {
 	double x;
 	for(int i=0; i<D; i++) {
 		x = x0 + i*deltaX;
-		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1/2)*pow((x-xstart),2.0));
-		//cout << tempPsiVal << endl;
+		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1.0/2.0)*pow((x-xstart),2.0));
 		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
 	}
 	
 	cdouble A = pow((2*M_PI*hbar*I*deltaT/mass),.5);
 	vector<cdouble> transitionMatrix;
-	int xi;
-	int xj;
+	double xi;
+	double xj;
 	for(int i=0; i<D; i++) {
 		for(int j=0; j<D; j++) {
 			xi = x0 + i*deltaX;
 			xj = x0 + j*deltaX;
-			transitionMatrix.push_back((1.0/A)*exp((I*deltaT/hbar)*((.5*mass*pow(xj-xi,2)/pow(deltaT,2))-(mass*pow(omega,2)*pow((xj+xi)/2,2)))));
+			transitionMatrix.push_back((1.0/A) * exp( (I*deltaT/hbar) * ( (.5*mass*pow(xj-xi,2)/pow(deltaT,2)) - (mass*pow(omega,2) * pow((xj+xi)/2,2)) ) ));
 		}
 	}
 	vector<cdouble> psi = psiDisc;
-	for(int i=0; i<32; i++) {
-		psi = vecMatMul(psi,transitionMatrix);
+	for(int n=0; n<=128; n++) {
+		//psi = vecNorm(psi);
+		string file = "out" + to_string(n) + ".txt";
+		//printCVec(psi, file);
+		
+		for(int i=0; i<1; i++) {
+			psi = vecMatMul(psi,transitionMatrix);
+			for(int i=0; i<D; i++) {
+				psi.at(i) = psi.at(i)*deltaX;
+			}
+			oFile.open("out0.txt", ios::app);
+			oFile << n << "	" << getV(psi) << endl;
+			oFile.close();
+			oFile.open("out1.txt", ios::app);
+			oFile << n << "	" << getK(psi) << endl;
+			oFile.close();
+			oFile.open("out2.txt", ios::app);
+			oFile << n << "	" << getV(psi) + getK(psi) << endl;
+			oFile.close();
+			cout << n << "	" << getAvgX(psi) << endl;
+			//psi = vecNorm(psi);
+		}
+		
+
 	}
 	
-	cout << A << endl;
-	
 	//printCVec(psi);
-	printCVec(transitionMatrix);
+	//printCVec(transitionMatrix);
 	
 	
 }
@@ -75,13 +101,67 @@ vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
 	return newVec;
 }
 
-void printCVec(vector<cdouble> v) {
+void printCVec(vector<cdouble> v, string fileName) {
 	double i = 0;
 	double x;
 	for(cdouble val : v) {
 		x = x0 + i*deltaX;
 		i++;
-		cout << x << "	" << val*conj(val) << endl;
+		oFile.open(fileName, ios::app);
+		oFile << x << "	" << real(val*conj(val)) << endl;
+		oFile.close();
 	}
 }
 
+vector<cdouble> vecNorm(vector<cdouble> v) {
+	cdouble sum = (0.0,0.0);
+	for(val : v) {
+		sum += val * conj(val);
+	}
+	cdouble mag = pow(sum,.5);
+	for(int i=0; i<D; i++) {
+		v.at(i) = v.at(i) / mag;
+	}
+	return v;
+}
+
+double getAvgX(vector<cdouble> v) {
+	int currMaxProb = 0;
+	for(int i=0; i<D; i++) {
+		//cout << real(v.at(i)*conj(v.at(i))) << "	" << real(v.at(currMaxProb)*conj(v.at(currMaxProb))) << endl;
+		if( real(v.at(i)*conj(v.at(i))) > real(v.at(currMaxProb)*conj(v.at(currMaxProb))) ) {
+			currMaxProb = i;
+		}
+	}
+	return(x0 + currMaxProb*deltaX);
+}
+
+double getV(vector<cdouble> v){
+	double x = getAvgX(v);
+	if(x < 0) {
+		x = x + xstart;
+	}
+	else {
+		x = x - xstart;
+	}
+	return .5*mass*pow(omega,2)*pow(x,2);
+
+}
+double getK(vector<cdouble> v){
+	double sum = 0.0;
+	for(int i=1;i<D-1;i++) {
+		cdouble minus;
+		cdouble plus;
+		
+		minus = v.at(i-1);
+		
+		plus = v.at(i+1);
+
+		
+		sum += (real(conj(v.at(i)) * ( (minus + plus - (v.at(i) * 2.0)) / deltaX ) ) );
+
+	}
+	return sum * -1.0 * pow(hbar,2) / (2*mass);
+
+
+}
