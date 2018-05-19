@@ -18,12 +18,15 @@ const double mass = 1.0;
 const double omega = 1.0;
 const double alpha = 2.0;
 const double hbar = 1.0;//6.582119 * pow(10,-16); 
-const double xstart = .75;
+const double xstart = -1.0;
 const double x0 = -4.0;
 const double xD = 4.0;
 const double deltaX = (xD - x0)/D;
 const double T = 2.0 * M_PI;
-const double deltaT = T/128.0;
+const double deltaT = T/256.0;
+const double A = 1;
+const double B = 2;
+const double C = 4;
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m);
 void printCVec(vector<cdouble> v, string fileName);
@@ -31,6 +34,7 @@ vector<cdouble> vecNorm(vector<cdouble> v);
 double getAvgX(vector<cdouble> v);
 double getV(vector<cdouble> v);
 double getK(vector<cdouble> v);
+double V(double x);
 
 ofstream oFile;
 
@@ -41,8 +45,8 @@ int main() {
 	double x;
 	for(int i=0; i<D; i++) {
 		x = x0 + i*deltaX;
-		tempPsiVal = pow((alpha/M_PI),.25)*exp((alpha*-1.0/2.0)*pow((x-xstart),2.0));
-		psiDisc.push_back(tempPsiVal * conj(tempPsiVal));
+		tempPsiVal = pow((pow(8,.5)/M_PI),2)*exp(-1.0*pow(2,.5)*pow((x-xstart),2.0));
+		psiDisc.push_back(tempPsiVal); // * conj(tempPsiVal));
 	}
 	
 	cdouble A = pow((2*M_PI*hbar*I*deltaT/mass),.5);
@@ -53,20 +57,21 @@ int main() {
 		for(int j=0; j<D; j++) {
 			xi = x0 + i*deltaX;
 			xj = x0 + j*deltaX;
-			transitionMatrix.push_back((1.0/A) * exp( (I*deltaT/hbar) * ( (.5*mass*pow(xj-xi,2)/pow(deltaT,2)) - (mass*pow(omega,2) * pow((xj+xi)/2,2)) ) ));
+			transitionMatrix.push_back((1.0/A) * exp( (I*deltaT/hbar) * ( (.5*mass*pow(xj-xi,2)/pow(deltaT,2)) - V((xi+xj)/2) )));
 		}
 	}
 	vector<cdouble> psi = psiDisc;
-	for(int n=0; n<=128; n++) {
-		//psi = vecNorm(psi);
+	for(int n=0; n<=350; n++) {
+		psi = vecNorm(psi);
 		string file = "out" + to_string(n) + ".txt";
-		//printCVec(psi, file);
+		printCVec(psi, file);
 		
-		for(int i=0; i<1; i++) {
+		for(int i=0; i<2; i++) {
 			psi = vecMatMul(psi,transitionMatrix);
 			for(int i=0; i<D; i++) {
 				psi.at(i) = psi.at(i)*deltaX;
 			}
+			/*
 			oFile.open("out0.txt", ios::app);
 			oFile << n << "	" << getV(psi) << endl;
 			oFile.close();
@@ -77,6 +82,7 @@ int main() {
 			oFile << n << "	" << getV(psi) + getK(psi) << endl;
 			oFile.close();
 			cout << n << "	" << getAvgX(psi) << endl;
+			*/
 			//psi = vecNorm(psi);
 		}
 		
@@ -87,6 +93,11 @@ int main() {
 	//printCVec(transitionMatrix);
 	
 	
+}
+
+double V(double x) {
+	//return(pow(x,4) - 2.0*pow(x,2) + 1);
+	return( pow( (1.0/pow(A,2)*pow(x,2) - pow(B,.5)) , 2) );
 }
 
 vector<cdouble> vecMatMul(vector<cdouble> v, vector<cdouble> m) {
@@ -114,11 +125,12 @@ void printCVec(vector<cdouble> v, string fileName) {
 }
 
 vector<cdouble> vecNorm(vector<cdouble> v) {
-	cdouble sum = (0.0,0.0);
+	double sum = 0.0;
 	for(val : v) {
-		sum += val * conj(val);
+		sum += norm(val)*
+		deltaX;
 	}
-	cdouble mag = pow(sum,.5);
+	double mag = pow(sum,.5);
 	for(int i=0; i<D; i++) {
 		v.at(i) = v.at(i) / mag;
 	}
@@ -137,14 +149,12 @@ double getAvgX(vector<cdouble> v) {
 }
 
 double getV(vector<cdouble> v){
-	double x = getAvgX(v);
-	if(x < 0) {
-		x = x + xstart;
+	double sum = 0.0;
+	for(int i=0;i<D;i++) {
+		double x = xstart + i*deltaX;
+		sum += V(x) * real(v.at(i) * conj(v.at(i))) * deltaX;
 	}
-	else {
-		x = x - xstart;
-	}
-	return .5*mass*pow(omega,2)*pow(x,2);
+	return sum; //* pow(deltaX, 3);
 
 }
 double getK(vector<cdouble> v){
@@ -165,3 +175,4 @@ double getK(vector<cdouble> v){
 
 
 }
+
